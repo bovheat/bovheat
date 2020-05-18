@@ -1,0 +1,75 @@
+name: StartupCheck
+
+on: [push, pull_request]
+
+jobs:
+  test:
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest] #, windows-latest, macos-latest] too expensive atm
+        python-version: [3.8] #3.7, 3.8
+      
+    runs-on: ${{ matrix.os }}
+    
+    name: Test ${{ matrix.os }} + Py ${{ matrix.python-version }} + ${{ github.ref }} + ${{github.base_ref}}
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install poetry
+        poetry install --no-dev
+        ls
+    - name: Test with pytest
+      run: |
+        poetry install -E pytest-testing
+        poetry run python -m pytest --cov=heat_builder
+#    - name: Upload coverage to Codecov
+#      uses: codecov/codecov-action@v1
+#      with:
+#        token: ${{ secrets.CODECOV_TOKEN }}
+#        file: .coverage
+#        flags: unittests
+#        name: codecov-umbrella
+#        fail_ci_if_error: false
+
+  build:
+    needs: test
+    if: github.ref == 'refs/heads/master' || github.base_ref == 'master'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: [3.8] #3.7, 3.8
+
+    runs-on: ${{ matrix.os }}
+
+    name: Build ${{ matrix.os }} + Py ${{ matrix.python-version }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install poetry
+        poetry install --no-dev
+        poetry install -E pyinstaller
+    - name: Build executable
+      run: |
+        poetry run pyinstaller --onefile --osx-bundle-identifier org.bovheat.bovheat bovheat_src/bovheat.py
+        # --icon
+    - name: Upload artifact ${{ matrix.os }}
+      uses: actions/upload-artifact@v1
+      with:
+        name: bovHEAT-for-${{ runner.os }}
+        path: dist/

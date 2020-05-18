@@ -1,0 +1,29 @@
+site_name: Bovine Heat Analysis Tool (BovHEAT)
+repo_url: https://github.com/bovheat/bovheat
+
+nav:
+    - Home: 'index.md'
+    - About:
+        - About: 'about/about.md'
+        - 'about/license.md'
+    - mkdocs: 'mkdocs.md'
+
+theme:
+    name: material # https://squidfunk.github.io/mkdocs-material/getting-started/
+    language: en
+    features:
+        - tabs
+        #- instant
+    palette:
+      primary: indigo
+      accent: indigo
+    font:
+        text: Roboto
+        code: Roboto Mono
+ #   logo: img/logo.png
+ #   favicon: img/favicon.png
+
+markdown_extensions:
+    - smarty
+#    - minify:
+#         minify_html: true
