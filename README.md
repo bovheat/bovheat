@@ -1,5 +1,5 @@
-![StartupCheck]()
-![LintGTE7]()
+![Test and Build](https://github.com/bovheat/bovheat/workflows/Test_and_Build/badge.svg)
+![Lint](https://github.com/bovheat/bovheat/workflows/Linting/badge.svg)
 # BovHEAT
 
 Bovine Heat Analysis Tool (BovHEAT) - Automated Heat detection and analysis tool for "SCR Heatime"

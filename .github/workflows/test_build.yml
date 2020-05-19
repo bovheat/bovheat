@@ -1,4 +1,4 @@
-name: StartupCheck
+name: Test_and_Build
 
 on: [push, pull_request]
 
