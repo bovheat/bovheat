@@ -81,7 +81,7 @@ def read_sourcedata(language, relative_path=""):
     for root, _, files in os.walk(folderpath):
         for name in files:
             if name.endswith((".xlsx", ".xls")) and not name.startswith(
-                (".", "~", "BovHEAT")
+                    (".", "~", "BovHEAT")
             ):
                 print("\r Reading file", name, end="")
 
@@ -106,34 +106,6 @@ def read_sourcedata(language, relative_path=""):
     assert len(sum_df) > 0, "No XLSX or XLS files found."
 
     return sum_df
-
-
-# %%
-def get_result_frame_template():
-    """
-
-    :rtype: object
-    """
-    # Empty dataframe structure template with col names:
-    columns = [
-        "foldername",  # farm name
-        "cow_number",  # cow number
-        "lactation",  # lactation number
-        "calving_date",  # latest calvin date
-        "act_usable",  # activity usable in timewindow in %
-        "act_max",  # activity maximum
-        "heat_count",
-        "heat_no",
-        "start_dt_heat",
-        "stop_dt_heat",
-        "duration_heat",
-        "max_act_heat",
-        "max_dt_heat",
-        "max_dim_heat",
-        "touching_heat",  # bool warning, if peaks too close to eachother
-    ]
-
-    return pd.DataFrame(columns=columns)
 
 
 # %%
@@ -291,7 +263,7 @@ def calc_heats(cowdf, threshold):
     gte_threshold_indexes = cowdf[cowdf["Activity Change"] >= threshold].index
 
     for _, group in itertools.groupby(
-        enumerate(gte_threshold_indexes), lambda x: x[1] - x[0]
+            enumerate(gte_threshold_indexes), lambda x: x[1] - x[0]
     ):
         peak_groups.append(list(map(lambda x: x[1], group)))
 
