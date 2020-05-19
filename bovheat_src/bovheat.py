@@ -159,8 +159,6 @@ def calc_calving_date(cowdf):
 
     Arguments:
         cowdf {[type]} -- [description]
-        cowdf_results {[type]} -- [description]
-        lactation {[type]} -- [description]
     """
     print(
         "\r Calculating calving date for",
@@ -223,16 +221,6 @@ def cut_time_window(cowdf, start_dim, stop_dim):
 
 
 # %%
-
-
-# %%
-
-
-def get_usable(cowdf_cut):
-    if cowdf_cut is not None:
-        return cowdf_cut["Activity Change"].notnull().sum() / len(cowdf_cut) * 100
-    return 0
-
 
 def calc_heats(cowdf, threshold):
     # ToDo: Implement peaks-touching
