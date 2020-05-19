@@ -30,15 +30,15 @@ jobs:
     - name: Test with pytest
       run: |
         poetry install -E pytest-testing
-        poetry run python -m pytest --cov=heat_builder
-#    - name: Upload coverage to Codecov
-#      uses: codecov/codecov-action@v1
-#      with:
-#        token: ${{ secrets.CODECOV_TOKEN }}
-#        file: .coverage
-#        flags: unittests
-#        name: codecov-umbrella
-#        fail_ci_if_error: false
+        poetry run python -m pytest --cov=bovheat_src
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: .coverage
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
 
   build:
     needs: test
