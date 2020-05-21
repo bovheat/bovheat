@@ -1,7 +1,6 @@
+# pylint: disable-all
 import unittest
-
 import pandas as pd
-
 from bovheat_src import bovheat as bh
 
 

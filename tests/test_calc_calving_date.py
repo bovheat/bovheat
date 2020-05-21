@@ -1,3 +1,4 @@
+# pylint: disable-all
 import pytest
 import pandas as pd
 from bovheat_src import bovheat as bh
@@ -16,7 +17,7 @@ from bovheat_src import bovheat as bh
                                                       # Should ignore smaller datetime
                                                       pd.to_datetime("2015-02-23 10:00:00")]}),
                            pd.to_datetime("2015-02-03 00:00:00")),
-                          # Test Missing Days in Lactation
+                          # 3 Test Missing Days in Lactation
                           (pd.DataFrame({"foldername": ["1"], "Cow Number": ["1"],
                                          "Days in Lactation": [None]}),
                            None),

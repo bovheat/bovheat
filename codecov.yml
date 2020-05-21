@@ -1,0 +1,4 @@
+comment:
+  require_changes: yes
+  branches:               # branch names that can post comment
+    - "master"
