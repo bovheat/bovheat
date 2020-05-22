@@ -298,13 +298,15 @@ def main():
         raise SystemExit
 
     print("\nProcessing ...")
-    out_filename = f"BovHEAT_start{start_dim}_stop{stop_dim}_t{threshold}_" + datetime.now().strftime(
-        "%Y-%m-%d_%H-%M-%S"
+    out_filename = (
+        f"BovHEAT_start{start_parameters['start_dim']}_stop\
+                   {start_parameters['stop_dim']}_t{start_parameters['threshold']}_"
+        + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     )
 
-    source_df_cleaned = source_df.groupby(
-        ["foldername", "Cow Number"], group_keys=False
-    ).apply(get_cleaned_copy)
+    source_df_cleaned = source_df.groupby(["foldername", "Cow Number"], group_keys=False).apply(
+        get_cleaned_copy
+    )
 
     calving_dates = source_df_cleaned.groupby(
         ["foldername", "Cow Number", "Lactation Number"]

@@ -18,7 +18,12 @@ def ask_constants():
         userchoice = input("Please type c to continue or r to retry: ")
 
         if userchoice == "c":
-            return (language, start_dim, stop_dim, threshold)
+            return {
+                "language": language,
+                "start_dim": start_dim,
+                "stop_dim": stop_dim,
+                "threshold": threshold,
+            }
 
 
 # %%
@@ -67,9 +72,7 @@ def read_sourcedata(language, relative_path=""):
     print(f"Reading directory {folderpath}:")
     for root, _, files in os.walk(folderpath):
         for name in files:
-            if name.endswith((".xlsx", ".xls")) and not name.startswith(
-                    (".", "~", "BovHEAT")
-            ):
+            if name.endswith((".xlsx", ".xls")) and not name.startswith((".", "~", "BovHEAT")):
                 print("\r Reading file", name, end="")
 
                 data = pd.read_excel(
@@ -93,4 +96,3 @@ def read_sourcedata(language, relative_path=""):
     assert len(sum_df) > 0, "No XLSX or XLS files found."
 
     return sum_df
-
