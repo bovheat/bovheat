@@ -182,8 +182,8 @@ def main():
 
     print("\nProcessing ...")
     out_filename = (
-        f"BovHEAT_start{start_parameters['start_dim']}_stop\
-                   {start_parameters['stop_dim']}_t{start_parameters['threshold']}_"
+        f"BovHEAT_start{start_parameters['start_dim']}"
+        + f"_stop{start_parameters['stop_dim']}_t{start_parameters['threshold']}_"
         + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     )
 
