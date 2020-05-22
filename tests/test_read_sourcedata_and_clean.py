@@ -1,6 +1,6 @@
 # pylint: disable-all
 import pytest
-from bovheat_src import bovheat as bh
+from bovheat_src import bh_input, bovheat
 
 # Test pass
 @pytest.mark.parametrize(
@@ -14,11 +14,11 @@ from bovheat_src import bovheat as bh
 )
 def test_calc_calving_date_pass(lang, rel_path, out1, out2):
     # Test Reading files
-    df = bh.read_sourcedata(lang, rel_path)
+    df = bh_input.read_sourcedata(lang, rel_path)
     assert len(df) == out1
 
     # Test cleaning loaded data
-    assert len(bh.get_cleaned_copy(df)) == out2
+    assert len(bovheat.get_cleaned_copy(df)) == out2
 
 
 # Test Exceptions
@@ -38,7 +38,7 @@ def test_calc_calving_date_pass(lang, rel_path, out1, out2):
 def test_calc_calving_date_fail(lang, rel_path, exception_msg):
     # Expect Exception
     with pytest.raises(Exception) as e:
-        assert bh.read_sourcedata(lang, rel_path)
+        assert bh_input.read_sourcedata(lang, rel_path)
 
     # Check exception message
     assert exception_msg in str(e.value)

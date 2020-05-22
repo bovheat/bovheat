@@ -1,7 +1,28 @@
 import os
 
+import pandas as pd
+
+
+def get_sourcedata(start_parameters, relative_path):
+
+    # Scan all file root and subfolders for xls and xslx files.
+    # Raise exception and exit if none are found.
+
+    try:
+        print("Reading source")
+        source_df = read_sourcedata(start_parameters["language"], relative_path)
+    except Exception as e:
+        print("Error: ", e)
+        input("Press Enter to exit.")
+        raise SystemExit
+
+    return source_df
+
+
 # %%
-def ask_constants():
+def get_userinput():
+
+    # ToDo Check start_dim < stop_dim
     while True:
         language = input("Column header language, type either eng or ger: ")
         start_dim = int(input("Choose DIM to start, e.g. 0: "))
