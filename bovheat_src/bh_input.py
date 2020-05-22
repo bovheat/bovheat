@@ -3,22 +3,6 @@ import os
 import pandas as pd
 
 
-def get_sourcedata(start_parameters, relative_path):
-
-    # Scan all file root and subfolders for xls and xslx files.
-    # Raise exception and exit if none are found.
-
-    try:
-        print("Reading source")
-        source_df = read_sourcedata(start_parameters["language"], relative_path)
-    except Exception as e:
-        print("Error: ", e)
-        input("Press Enter to exit.")
-        raise SystemExit
-
-    return source_df
-
-
 # %%
 def get_userinput():
 
@@ -51,6 +35,7 @@ def get_userinput():
 def read_sourcedata(language, relative_path=""):
     """Reads all .xslx files in current directory and merges into one dataframe
     Unnamend columns and empty rows are dismissed.
+
 
     Mandatory column with named headers in input SCR files:
     'Activity Change'

@@ -178,7 +178,16 @@ def calc_heats(cowdf, threshold):
 # %%
 def main():
     start_parameters = bh_input.get_userinput()
-    source_df = bh_input.get_sourcedata(start_parameters, relative_path="../data")
+
+    # Scan all file root and subfolders for xls and xslx files.
+    # Raise exception and exit if none are found.
+    try:
+        print("Reading source")
+        source_df = bh_input.read_sourcedata(start_parameters["language"], relative_path="../data")
+    except Exception as e:
+        print("Error: ", e)
+        input("Press Enter to exit.")
+        raise SystemExit
 
     print("\nProcessing ...")
     out_filename = (
