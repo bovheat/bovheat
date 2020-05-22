@@ -42,9 +42,7 @@ def calc_long_to_wide(final_df):
 
     #
     wide_df.drop(
-        columns=[
-            name_tuple for name_tuple in wide_df.columns if pd.isna(name_tuple[1])
-        ],
+        columns=[name_tuple for name_tuple in wide_df.columns if pd.isna(name_tuple[1])],
         inplace=True,
     )
     wide_df.columns = [f"{name}{heat_no}" for name, heat_no in wide_df.columns]
@@ -54,12 +52,9 @@ def calc_long_to_wide(final_df):
 
 
 def get_col_widths(dataframe):
-    idx_max = max(
-        [len(str(s)) for s in dataframe.index.values] + [len(str(dataframe.index.name))]
-    )
+    idx_max = max([len(str(s)) for s in dataframe.index.values] + [len(str(dataframe.index.name))])
     return [idx_max] + [
-        max([len(str(s)) for s in dataframe[col].values] + [len(col)])
-        for col in dataframe.columns
+        max([len(str(s)) for s in dataframe[col].values] + [len(col)]) for col in dataframe.columns
     ]
 
 
@@ -89,10 +84,7 @@ def write_pdf(heats_df, sections_df, threshold, filename):
 
 def build_pdf_page(cowdf, heats_df, pdf_file, threshold):
     print(
-        "\r Building PDF for",
-        cowdf["foldername"].iloc[0],
-        cowdf["Cow Number"].iloc[0],
-        end="",
+        "\r Building PDF for", cowdf["foldername"].iloc[0], cowdf["Cow Number"].iloc[0], end="",
     )
 
     cownumber = cowdf["Cow Number"].iloc[0]
@@ -119,18 +111,12 @@ def build_pdf_page(cowdf, heats_df, pdf_file, threshold):
 
     if cowdf["datetime"].isin([calving_date]).any():
         ax.axvline(
-            calving_date + pd.Timedelta(hours=1),
-            label="calving",
-            color="black",
-            linestyle="-",
+            calving_date + pd.Timedelta(hours=1), label="calving", color="black", linestyle="-",
         )
 
     for _, heat in heats_df[heats_df["heat_no"] > 0].groupby(["heat_no"]):
         ax.axvspan(
-            heat["start_dt_heat"].iloc[0],
-            heat["stop_dt_heat"].iloc[0],
-            alpha=0.1,
-            color="red",
+            heat["start_dt_heat"].iloc[0], heat["stop_dt_heat"].iloc[0], alpha=0.1, color="red",
         )
 
     plt.legend(loc="best")
