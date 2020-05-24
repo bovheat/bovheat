@@ -1,6 +1,68 @@
+import argparse
 import os
+from argparse import RawDescriptionHelpFormatter
 
 import pandas as pd
+
+
+def get_start_parameters(args):
+
+    # no parameters given
+    if args.mode is None:
+        return get_userinput()
+
+    # automatic mode chosen
+    if args.mode == "automatic":
+        return {
+            "language": args.language,
+            "start_dim": args.start,
+            "stop_dim": args.stop,
+            "threshold": args.threshold,
+        }
+
+
+def get_args():
+
+    parser = argparse.ArgumentParser(
+        description="Bovine Heat Analysis Tool (BovHEAT) \
+        \nTwo additional modes are available:",
+        formatter_class=RawDescriptionHelpFormatter,
+    )
+
+    parser.add_argument(
+        "-rel_path", type=str, default="",
+    )
+
+    subparsers = parser.add_subparsers(help="Available processing modes:", dest="mode")
+
+    parser_automatic = subparsers.add_parser(
+        "automatic", help="Automatic processing with given start parameters"
+    )
+    parser_automatic.add_argument("-language", type=str, choices=["ger", "eng"], required=True)
+    parser_automatic.add_argument("-start", type=int, required=True)
+    parser_automatic.add_argument("-stop", type=int, required=True)
+    parser_automatic.add_argument(
+        "-threshold", type=int, choices=range(0, 101), metavar="[0-100]", required=True
+    )
+
+    # Todo bulldozer mode for heifers
+    # parser_bulldozer = subparsers.add_parser(
+    #     "bulldozer", help="Processes all data found. Ignoring start, stop and calving dates."
+    # )
+    # parser_bulldozer.add_argument(
+    #     "-language", type=str, choices=["ger", "eng"], required=True
+    # )
+    # parser_bulldozer.add_argument(
+    #     "-threshold", type=int, choices=range(0, 101), metavar="[0-100]", required=True
+    # )
+
+    args = parser.parse_args()
+
+    if args.mode == "automatic":
+        if args.start > args.stop:
+            parser.error("Please choose start < stop.")
+
+    return args
 
 
 # %%
