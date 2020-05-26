@@ -7,59 +7,58 @@ import pandas as pd
 
 def get_start_parameters(args):
 
-    # no parameters given
-    if args.mode is None:
+    # interactive mode
+    if args.startstop is None:
         return get_userinput()
 
-    # automatic mode chosen
-    if args.mode == "automatic":
-        return {
-            "language": args.language,
-            "start_dim": args.start,
-            "stop_dim": args.stop,
-            "threshold": args.threshold,
-        }
+    # non-interactive mode
+    return {
+        "language": args.language,
+        "start_dim": args.startstop[0],
+        "stop_dim": args.startstop[1],
+        "threshold": args.threshold,
+    }
 
 
 def get_args():
 
     parser = argparse.ArgumentParser(
-        description="Bovine Heat Analysis Tool (BovHEAT) \
-        \nTwo additional modes are available:",
+        description="# Bovine Heat Analysis Tool (BovHEAT) #  \
+        \n\nBovHEAT starts in interactive mode, if startstop is not provided",
         formatter_class=RawDescriptionHelpFormatter,
     )
 
     parser.add_argument(
-        "-rel_path", type=str, default="",
+        "relative_path", type=str, nargs="?", default="",
     )
 
-    subparsers = parser.add_subparsers(help="Available processing modes:", dest="mode")
-
-    parser_automatic = subparsers.add_parser(
-        "automatic", help="Automatic processing with given start parameters"
+    parser.add_argument(
+        "-startstop",
+        nargs=2,
+        type=int,
+        metavar=("start-dim", "stop-dim"),
+        help="negative values are allowed",
     )
-    parser_automatic.add_argument("-language", type=str, choices=["ger", "eng"], required=True)
-    parser_automatic.add_argument("-start", type=int, required=True)
-    parser_automatic.add_argument("-stop", type=int, required=True)
-    parser_automatic.add_argument(
-        "-threshold", type=int, choices=range(0, 101), metavar="[0-100]", required=True
+    parser.add_argument(
+        "-language",
+        type=str,
+        choices=["ger", "eng"],
+        default="eng",
+        help="language of column headings, default=eng",
     )
-
-    # Todo bulldozer mode for heifers
-    # parser_bulldozer = subparsers.add_parser(
-    #     "bulldozer", help="Processes all data found. Ignoring start, stop and calving dates."
-    # )
-    # parser_bulldozer.add_argument(
-    #     "-language", type=str, choices=["ger", "eng"], required=True
-    # )
-    # parser_bulldozer.add_argument(
-    #     "-threshold", type=int, choices=range(0, 101), metavar="[0-100]", required=True
-    # )
+    parser.add_argument(
+        "-threshold",
+        type=int,
+        choices=range(0, 101),
+        metavar="[0-100]",
+        default=35,
+        help="threshold for heat detection, default=35",
+    )
 
     args = parser.parse_args()
 
-    if args.mode == "automatic":
-        if args.start > args.stop:
+    if args.startstop:
+        if args.startstop[0] > args.startstop[1]:
             parser.error("Please choose start < stop.")
 
     return args
