@@ -33,21 +33,24 @@ def get_args():
     )
 
     parser.add_argument(
-        "-startstop",
+        "-s",
+        "--startstop",
         nargs=2,
         type=int,
         metavar=("start-dim", "stop-dim"),
         help="negative values are allowed",
     )
     parser.add_argument(
-        "-language",
+        "-l",
+        "--language",
         type=str,
         choices=["ger", "eng"],
         default="eng",
         help="language of column headings, default=eng",
     )
     parser.add_argument(
-        "-threshold",
+        "-t",
+        "--threshold",
         type=int,
         choices=range(0, 101),
         metavar="[0-100]",
