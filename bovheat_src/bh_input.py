@@ -1,6 +1,70 @@
+import argparse
 import os
+from argparse import RawDescriptionHelpFormatter
 
 import pandas as pd
+
+
+def get_start_parameters(args):
+
+    # interactive mode
+    if args.startstop is None:
+        return get_userinput()
+
+    # non-interactive mode
+    return {
+        "language": args.language,
+        "start_dim": args.startstop[0],
+        "stop_dim": args.startstop[1],
+        "threshold": args.threshold,
+    }
+
+
+def get_args():
+
+    parser = argparse.ArgumentParser(
+        description="# Bovine Heat Analysis Tool (BovHEAT) #  \
+        \n\nBovHEAT starts in interactive mode, if startstop is not provided",
+        formatter_class=RawDescriptionHelpFormatter,
+    )
+
+    parser.add_argument(
+        "relative_path", type=str, nargs="?", default="",
+    )
+
+    parser.add_argument(
+        "-s",
+        "--startstop",
+        nargs=2,
+        type=int,
+        metavar=("start-dim", "stop-dim"),
+        help="negative values are allowed",
+    )
+    parser.add_argument(
+        "-l",
+        "--language",
+        type=str,
+        choices=["ger", "eng"],
+        default="eng",
+        help="language of column headings, default=eng",
+    )
+    parser.add_argument(
+        "-t",
+        "--threshold",
+        type=int,
+        choices=range(0, 101),
+        metavar="[0-100]",
+        default=35,
+        help="threshold for heat detection, default=35",
+    )
+
+    args = parser.parse_args()
+
+    if args.startstop:
+        if args.startstop[0] > args.startstop[1]:
+            parser.error("Please choose start < stop.")
+
+    return args
 
 
 # %%
