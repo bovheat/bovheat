@@ -118,7 +118,7 @@ def cut_time_window(cowdf, start_dim, stop_dim):
 
 
 def calc_heats(cowdf, threshold):
-    # ToDo: Implement peaks-touching
+    MINIMUM_HOURS_APART = 10
 
     act_usable = cowdf["Activity Change"].count() / (len(cowdf)) * 100
     cowdf.reset_index(drop=True, inplace=True)
@@ -136,7 +136,7 @@ def calc_heats(cowdf, threshold):
             "max_act_heat",
             "max_dim_heat",
             "max_dt_heat",
-            "abnormal_flag",
+            "short_inter_estrus",
         ]
     )
 
@@ -166,11 +166,14 @@ def calc_heats(cowdf, threshold):
         heat_df.loc[index, "max_dim_heat"] = max_dim_heat
         heat_df.loc[index, "max_dt_heat"] = max_dt_heat
 
+        if index > 0:
+            if (heat_group[0] - peak_groups[index - 1][-1]) * 2 < MINIMUM_HOURS_APART:
+                heat_df.loc[index, "short_inter_estrus"] = 1
+
     heat_df["calving_date"] = cowdf["calving_date"].iloc[0]
     heat_df["heat_count"] = heat_df["heat_no"].nunique()
     heat_df["act_usable"] = act_usable
     heat_df["act_max"] = heat_df["max_act_heat"].max()
-    heat_df["abnormal_flag"] = None
 
     return heat_df
 
