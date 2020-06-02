@@ -96,27 +96,39 @@ def get_userinput():
 
 
 # %%
-def read_sourcedata(language, relative_path=""):
-    """Reads all .xslx files in current directory and merges into one dataframe
-    Unnamend columns and empty rows are dismissed.
+def get_source_data(language, relative_path=""):
+    """Reads all .xslx and .xls files in current directory and merges into one dataframe.
 
-
-    Mandatory column with named headers in input SCR files:
+    Files have to include the following column headers names:
     'Activity Change'
     'Cow Number'
     'Date'
     'Time'
-    'Days in Lactation' - for estrus results and calving date determination
+    'Days in Lactation'
     'Lactation Number'
 
-    Returns:
-        pd.dataframe
+    File is skipped, if columns are not present or file is damaged.
+    Unnamed columns and empty rows are dismissed.
+
+    Parameters
+    ----------
+    language : str
+        Select column header language, ger or eng
+
+    relative_path : str
+        Specify optional relative path
+
+    Returns
+    -------
+    dataframe : pandas.DataFrame()
+        One Dataframe with all read tables combined
+
     """
 
     folderpath = os.path.join(os.getcwd(), relative_path)
 
     # right hand side are mandatory column headers
-    # left hand side can be edited, to comply with differenct column header languages
+    # left hand side can be edited, to comply with different column header languages
     translation_table = {
         "Cow Number": "Cow Number",
         "Date": "Date",
@@ -145,24 +157,31 @@ def read_sourcedata(language, relative_path=""):
             if name.endswith((".xlsx", ".xls")) and not name.startswith((".", "~", "BovHEAT")):
                 print("\r Reading file", name, end="")
 
-                data = pd.read_excel(
-                    os.path.join(root, name),
-                    usecols=list(translation_table.keys()),
-                    sheet_name=0,
-                    index=True,
-                )
+                try:
+                    data = read_clean_file(root, name, translation_table)
+                except:
+                    print(" ...SKIPPED",)
+                    continue
 
-                data.rename(columns=translation_table, inplace=True)
-
-                # removes empty rows, including possible footers rows
-                data.dropna(subset=["Cow Number", "Time"], inplace=True)
-
-                data["foldername"] = os.path.basename(root)
-
-                data["datetime"] = pd.to_datetime(
-                    data["Date"].astype(str) + " " + data["Time"].astype(str)
-                )
                 sum_df = pd.concat([sum_df, data], axis=0, sort=False)
+
     assert len(sum_df) > 0, "No XLSX or XLS files found."
 
     return sum_df
+
+
+def read_clean_file(root, name, translation_table):
+    data = pd.read_excel(
+        os.path.join(root, name), usecols=list(translation_table.keys()), sheet_name=0, index=True,
+    )
+
+    data.rename(columns=translation_table, inplace=True)
+
+    # removes empty rows, including possible footers rows
+    data.dropna(subset=["Cow Number", "Time"], inplace=True)
+
+    data["foldername"] = os.path.basename(root)
+
+    data["datetime"] = pd.to_datetime(data["Date"].astype(str) + " " + data["Time"].astype(str))
+
+    return data

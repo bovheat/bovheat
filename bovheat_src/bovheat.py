@@ -187,7 +187,7 @@ def main():
     # Raise exception and exit if none are found.
     try:
         print("Reading source")
-        source_df = bh_input.read_sourcedata(
+        source_df = bh_input.get_source_data(
             start_parameters["language"], relative_path=args.relative_path
         )
     except Exception as e:
