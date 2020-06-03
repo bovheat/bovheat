@@ -2,12 +2,15 @@
 
 
 import itertools
+import warnings
 from datetime import datetime
+
+# Hide MatplotlibDeprecationWarning in PyInstaller executable
+warnings.filterwarnings("ignore", "(?s).*MATPLOTLIBDATA.*", category=UserWarning)
 
 import pandas as pd
 
 from bovheat_src import bh_input, bh_output
-
 
 # %%
 def get_cleaned_copy(cowdf):
