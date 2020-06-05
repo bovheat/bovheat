@@ -234,15 +234,17 @@ def main():
     heats_df = heats_df.reset_index().drop(columns="level_3")
     heats_filtered_df = heats_df[heats_df["act_usable"] > 0]
 
-    print("\nCalculation finished - Writing pdf and xlsx files...")
+    print("\nCalculation finished - Writing xlsx file...")
+    bh_output.write_xlsx(heats_filtered_df, filename=out_filename)
 
+    print("\nWriting visualisation to pdf file...")
     bh_output.write_pdf(
         heats_filtered_df,
         sections_df=sections_df,
         threshold=start_parameters["threshold"],
         filename=out_filename,
     )
-    bh_output.write_xlsx(heats_filtered_df, filename=out_filename)
+
 
     input("Hit Enter to close.")
 
