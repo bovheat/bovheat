@@ -23,14 +23,15 @@ Example output as XLSX and PDF files can be examined at [example/output/](exampl
 For this example an observation period of 5 days before till 30 days after calving was selected.
 The estrus detection threshold was set at 35.
 #### Data
-To try BovHEAT on your machine and generate the output for yourself, download the zipped example data from [example/output/data_zipped.zip](example/data/data_zipped.zip).
+To try BovHEAT on your machine and generate the output for yourself, download the zipped example data
+ from [example/output/data_zipped.zip](example/data/data_zipped.zip).
 Run the BovHeat in parent folder according to the steps below. The column language is eng.
 
 ## Usage
 
 #### 1. Download
 We provide a one-file executable for Windows, Linux and macOS.
-Download the executable corresponding to your OS from [the excecutables directory](excecutables/). 
+Download the executable corresponding to your OS from the [executables/](executables/) directory. 
 #### 2. SCR files and folder structure
 Place the BovHEAT executable in the folder containing SCR files in the XLSX or XLS format.
 Alternatively, you can group SCR files in folders and put BovHEAT in the parent folder.
