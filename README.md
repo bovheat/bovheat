@@ -53,10 +53,11 @@ Execute BovHEAT, wait a few seconds for it to start and enter the following info
 Column language of the SCR files  
 
 `Start and Stop DIM`  
-Choose the start and stop DIM to select the observation interval. Start -5 and Stop 35 would include 5 days before till 35 days after calving.  
+Choose the start and stop DIM to select the observation interval.  
+ As an example: Start -5 and Stop 35 would include 5 days before till 35 days after calving.  
 
 `Threshold`  
-Choose the desired for estrus detection. Recommend is 35.  
+Choose the desired threshold for estrus detection. Recommended is a threshold of 35.  
 
 
 #### 4. Processing and results
@@ -66,7 +67,7 @@ a PDF file with activity line graph visualizations for each cow.
 ## Requirements and constraints
 
 #### SCR file requirements
-The following columns are required to be present:
+The following columns are required to be present in all SCR files:
 ```
 "Cow Number"
 "Date"
