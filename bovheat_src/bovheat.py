@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-
 import itertools
+import textwrap
 import warnings
 from datetime import datetime
 
@@ -11,6 +11,16 @@ warnings.filterwarnings("ignore", "(?s).*MATPLOTLIBDATA.*", category=UserWarning
 import pandas as pd
 
 from bovheat_src import bh_input, bh_output
+
+# %%
+def print_welcome():
+    welcome_message = """
+    Bovine Heat Analysis Tool (BovHEAT) - Version 1.0.0
+    https://github.com/bovheat/bovheat
+    """
+
+    print(textwrap.dedent(welcome_message))
+
 
 # %%
 def get_cleaned_copy(cowdf):
@@ -183,6 +193,7 @@ def calc_heats(cowdf, threshold):
 
 # %%
 def main():
+    print_welcome()
     args = bh_input.get_args()
     start_parameters = bh_input.get_start_parameters(args)
 
@@ -244,7 +255,6 @@ def main():
         threshold=start_parameters["threshold"],
         filename=out_filename,
     )
-
 
     input("Hit Enter to close.")
 
