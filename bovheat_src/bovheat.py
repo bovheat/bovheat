@@ -34,10 +34,7 @@ def get_cleaned_copy(cowdf):
     """
 
     print(
-        "\r Cleaning data for",
-        cowdf["foldername"].iloc[0],
-        cowdf["Cow Number"].iloc[0],
-        end="",
+        "\r Cleaning data for", cowdf["foldername"].iloc[0], cowdf["Cow Number"].iloc[0], end="",
     )
 
     cowdf = cowdf.copy()
@@ -101,9 +98,7 @@ def calc_calving_date(cowdf):
 def cut_time_window(cowdf, start_dim, stop_dim):
     timeframe_dfs = pd.DataFrame()
 
-    calving_dates = [
-        date for date in cowdf["calving_date"].unique() if not pd.isnull(date)
-    ]
+    calving_dates = [date for date in cowdf["calving_date"].unique() if not pd.isnull(date)]
     for calving_date in calving_dates:
         type(calving_date)
         date_start = calving_date + pd.Timedelta(days=start_dim)
@@ -113,9 +108,7 @@ def cut_time_window(cowdf, start_dim, stop_dim):
         datetime_range = pd.date_range(date_start, date_end, freq="2H", closed="left")
         base_df = pd.DataFrame(data={"datetime": datetime_range})
 
-        timeframe_df = pd.merge(
-            base_df, cowdf, on="datetime", how="left", validate="one_to_one"
-        )
+        timeframe_df = pd.merge(base_df, cowdf, on="datetime", how="left", validate="one_to_one")
 
         # interpolates, especially over 10:00pm missing values
         timeframe_df["Activity Change"] = timeframe_df["Activity Change"].interpolate(
@@ -165,9 +158,7 @@ def calc_heats(cowdf, threshold):
     peak_groups = []  # Example: [[2, 3, 4, 5], [8, 9, 10, 11]]
     gte_threshold_indexes = cowdf[cowdf["Activity Change"] >= threshold].index
 
-    for _, group in itertools.groupby(
-        enumerate(gte_threshold_indexes), lambda x: x[1] - x[0]
-    ):
+    for _, group in itertools.groupby(enumerate(gte_threshold_indexes), lambda x: x[1] - x[0]):
         peak_groups.append(list(map(lambda x: x[1], group)))
 
     for index, heat_group in enumerate(peak_groups):
@@ -225,9 +216,9 @@ def main():
         + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     )
 
-    source_df_cleaned = source_df.groupby(
-        ["foldername", "Cow Number"], group_keys=False
-    ).apply(get_cleaned_copy)
+    source_df_cleaned = source_df.groupby(["foldername", "Cow Number"], group_keys=False).apply(
+        get_cleaned_copy
+    )
 
     calving_dates = source_df_cleaned.groupby(
         ["foldername", "Cow Number", "Lactation Number"]
