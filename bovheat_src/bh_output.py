@@ -64,7 +64,7 @@ def write_pdf(heats_df, sections_df, threshold, filename):
 
     pdf_file = PdfPages(filename)  # Start PDF file
 
-    # # example to paralalize group processing
+    # # example to parallelize group processing
     # def applyParallel(dfGrouped, func):
     #     with Pool(cpu_count()) as p:
     #         ret_list = p.map(func, [group for name, group in dfGrouped])
