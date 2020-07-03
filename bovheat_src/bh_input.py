@@ -1,6 +1,7 @@
 import argparse
 import os
-from argparse import RawDescriptionHelpFormatter
+
+import multiprocessing
 
 import pandas as pd
 
@@ -25,7 +26,7 @@ def get_args():
     parser = argparse.ArgumentParser(
         description="# Bovine Heat Analysis Tool (BovHEAT) #  \
         \n\nBovHEAT starts in interactive mode, if startstop is not provided",
-        formatter_class=RawDescriptionHelpFormatter,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
 
     parser.add_argument(
@@ -103,6 +104,30 @@ def get_userinput():
             }
 
 
+
+def read_clean_file(root, file_name, translation_table):
+    try:
+        data = pd.read_excel(
+            os.path.join(root, file_name), usecols=list(translation_table.keys()), sheet_name=0,
+            index=True,
+            )
+    except:
+        print(f"{file_name} ...SKIPPED", )
+        return None
+
+    print(f"\r{file_name}", end="")
+    data.rename(columns=translation_table, inplace=True)
+
+    # removes empty rows, including possible footers rows
+    data.dropna(subset=["Cow Number", "Time"], inplace=True)
+
+    data["foldername"] = os.path.basename(root)
+
+    data["datetime"] = pd.to_datetime(data["Date"].astype(str) + " " + data["Time"].astype(str))
+
+    return data
+
+
 # %%
 def get_source_data(language, relative_path=""):
     """Reads all .xslx and .xls files in current directory and merges into one dataframe.
@@ -159,37 +184,18 @@ def get_source_data(language, relative_path=""):
         translation_table = translation_german
 
     sum_df = pd.DataFrame()
-    print(f"Reading directory {folderpath}:")
+    file_list = []
+    print(f"Searching for files in directory {folderpath}:")
     for root, _, files in os.walk(folderpath):
         for name in files:
             if name.endswith((".xlsx", ".xls")) and not name.startswith((".", "~", "BovHEAT")):
-                print("\r Reading file", name, end="")
+                file_list.append((root, name, translation_table))
 
-                try:
-                    data = read_clean_file(root, name, translation_table)
-                except:
-                    print(" ...SKIPPED",)
-                    continue
+    print(f"{len(file_list)} files found. Reading ...")
+    with multiprocessing.Pool(processes=multiprocessing.cpu_count()) as pool:
+        df_list = pool.starmap(read_clean_file, file_list)
 
-                sum_df = pd.concat([sum_df, data], axis=0, sort=False)
-
-    assert len(sum_df) > 0, "No XLSX or XLS files found."
+    # None items are silently dropped by concat
+    sum_df = pd.concat(df_list, axis=0, sort=False)
 
     return sum_df
-
-
-def read_clean_file(root, name, translation_table):
-    data = pd.read_excel(
-        os.path.join(root, name), usecols=list(translation_table.keys()), sheet_name=0, index=True,
-    )
-
-    data.rename(columns=translation_table, inplace=True)
-
-    # removes empty rows, including possible footers rows
-    data.dropna(subset=["Cow Number", "Time"], inplace=True)
-
-    data["foldername"] = os.path.basename(root)
-
-    data["datetime"] = pd.to_datetime(data["Date"].astype(str) + " " + data["Time"].astype(str))
-
-    return data

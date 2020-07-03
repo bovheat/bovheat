@@ -64,6 +64,12 @@ def write_pdf(heats_df, sections_df, threshold, filename):
 
     pdf_file = PdfPages(filename)  # Start PDF file
 
+    # # example to paralalize group processing
+    # def applyParallel(dfGrouped, func):
+    #     with Pool(cpu_count()) as p:
+    #         ret_list = p.map(func, [group for name, group in dfGrouped])
+    #     return pandas.concat(ret_list)
+
     heats_df.groupby(["foldername", "Cow Number", "lactation_adj"]).apply(
         lambda df: build_pdf_page(
             cowdf=sections_df[
