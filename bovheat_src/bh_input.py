@@ -58,6 +58,14 @@ def get_args():
         help="threshold for heat detection, default=35",
     )
 
+    parser.add_argument(
+        "-o",
+        "--outputname",
+        type=str,
+        default="",
+        help="specify output filename for xlsx and pdf",
+    )
+
     args = parser.parse_args()
 
     if args.startstop:
