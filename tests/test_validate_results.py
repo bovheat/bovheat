@@ -17,7 +17,7 @@ def test_complete_runthrough(monkeypatch):
 
     # read generated and validated dataset
     validated_results_df = pd.read_excel("tests/test_validate_results/validated_results.xlsx")
-    out_file_df = pd.read_excel("tests/out_file.xlsx")
+    out_file_df = pd.read_excel("out_file.xlsx")
 
     # compare
     assert validated_results_df.equals(out_file_df)
