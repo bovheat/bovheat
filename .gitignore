@@ -138,3 +138,5 @@ dmypy.json
 *.ipynb
 *.code-workspace
 .vscode
+out_file.pdf
+out_file.xlsx

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import itertools
+import sys
 import textwrap
 import warnings
 from datetime import datetime
@@ -210,11 +211,6 @@ def main():
         raise SystemExit
 
     print("\nProcessing ...")
-    out_filename = (
-        f"BovHEAT_start{start_parameters['start_dim']}"
-        + f"_stop{start_parameters['stop_dim']}_t{start_parameters['threshold']}_"
-        + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    )
 
     source_df_cleaned = source_df.groupby(["foldername", "Cow Number"], group_keys=False).apply(
         get_cleaned_copy
@@ -244,6 +240,15 @@ def main():
 
     heats_df = heats_df.reset_index().drop(columns="level_3")
     heats_filtered_df = heats_df[heats_df["act_usable"] > 0]
+
+    if args.outputname is not None:
+        out_filename = args.outputname
+    else:
+        out_filename = (
+            f"BovHEAT_start{start_parameters['start_dim']}"
+            + f"_stop{start_parameters['stop_dim']}_t{start_parameters['threshold']}_"
+            + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        )
 
     print("\nCalculation finished - Writing xlsx file...")
     bh_output.write_xlsx(heats_filtered_df, filename=out_filename)
