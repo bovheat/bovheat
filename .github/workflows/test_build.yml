@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest] #, windows-latest, macos-latest] too expensive atm
+        os: [ubuntu-latest] #, windows-latest, macos-latest]
         python-version: [3.8] #3.7, 3.8
       
     runs-on: ${{ matrix.os }}
@@ -27,16 +27,27 @@ jobs:
         pip install poetry
         poetry install --no-dev
         ls
-    - name: Test with pytest
+    - name: Unit tests with pytest
       run: |
         poetry install -E pytest-testing
-        poetry run python -m pytest --cov=bovheat_src --cov-report=xml
-    - name: Upload coverage to Codecov
+        poetry run python -m pytest tests/unit --cov=bovheat_src --cov-report=xml:coverage_unit.xml
+    - name: Integration tests with pytest
+      run: |
+        poetry run python -m pytest tests/integration --cov=bovheat_src --cov-report=xml:coverage_integration.xml
+    - name: Upload unit coverage to Codecov
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage.xml
+        file: ./coverage_unit.xml
         flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+    - name: Upload integration coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage_integration.xml
+        flags: integration
         name: codecov-umbrella
         fail_ci_if_error: false
 
