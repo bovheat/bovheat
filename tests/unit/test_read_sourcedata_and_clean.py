@@ -7,9 +7,9 @@ from bovheat_src import bh_input, bovheat
     "lang, rel_path, out1, out2",
     [
         # Test 1 - eng and xlsx
-        ("eng", "tests/test_read_sourcedata_and_clean/Test1_eng_xlsx/", 6994, 6204),
+        ("eng", "tests/unit/test_read_sourcedata_and_clean/Test1_eng_xlsx/", 6994, 6204),
         # Test 2 - ger and xls
-        ("ger", "tests/test_read_sourcedata_and_clean/Test2_ger_xls/", 6970, 6366),
+        ("ger", "tests/unit/test_read_sourcedata_and_clean/Test2_ger_xls/", 6970, 6366),
     ],
 )
 def test_calc_calving_date_pass(lang, rel_path, out1, out2):
@@ -26,9 +26,9 @@ def test_calc_calving_date_pass(lang, rel_path, out1, out2):
     "lang, rel_path, exception_msg",
     [
         # Test 3 - malformed and corrupted files
-        ("eng", "tests/test_read_sourcedata_and_clean/Test3_malformed_corrupted/", "No XLSX or XLS files found.",),
+        ("eng", "tests/unit/test_read_sourcedata_and_clean/Test3_malformed_corrupted/", "No XLSX or XLS files found.",),
         # Test 4 - no valid files to read
-        ("eng", "tests/test_read_sourcedata_and_clean/Test4_empty/", "No XLSX or XLS files found."),
+        ("eng", "tests/unit/test_read_sourcedata_and_clean/Test4_empty/", "No XLSX or XLS files found."),
     ],
 )
 def test_calc_calving_date_fail(lang, rel_path, exception_msg):
