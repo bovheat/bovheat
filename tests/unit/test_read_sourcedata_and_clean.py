@@ -26,9 +26,9 @@ def test_calc_calving_date_pass(lang, rel_path, out1, out2):
     "lang, rel_path, exception_msg",
     [
         # Test 3 - malformed and corrupted files
-        ("eng", "tests/unit/test_read_sourcedata_and_clean/Test3_malformed_corrupted/", "No XLSX or XLS files found.",),
+        ("eng", "tests/unit/test_read_sourcedata_and_clean/Test3_malformed_corrupted/", "No files found or readable.",),
         # Test 4 - no valid files to read
-        ("eng", "tests/unit/test_read_sourcedata_and_clean/Test4_empty/", "No XLSX or XLS files found."),
+        ("eng", "tests/unit/test_read_sourcedata_and_clean/Test4_empty/", "No files found or readable."),
     ],
 )
 def test_calc_calving_date_fail(lang, rel_path, exception_msg):

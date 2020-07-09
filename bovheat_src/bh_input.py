@@ -195,6 +195,10 @@ def get_source_data(language, relative_path=""):
     with multiprocessing.Pool(processes=multiprocessing.cpu_count()//2) as pool:
         df_list = pool.starmap(read_clean_file, file_list)
 
+    valids_df = [df for df in df_list if isinstance(df, pd.DataFrame)]
+    if len(valids_df) < 1:
+        raise Exception("No files found or readable.")
+
     # None items are silently dropped by concat
     sum_df = pd.concat(df_list, axis=0, sort=False)
 

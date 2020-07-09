@@ -206,7 +206,7 @@ def main():
             start_parameters["language"], relative_path=args.relative_path
         )
     except Exception as e:
-        print("Error: ", e)
+        print("Error:", e)
         input("Press Enter to exit.")
         raise SystemExit
 
