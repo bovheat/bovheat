@@ -191,8 +191,9 @@ def get_source_data(language, relative_path=""):
             if name.endswith((".xlsx", ".xls")) and not name.startswith((".", "~", "BovHEAT")):
                 file_list.append((root, name, translation_table))
 
-    print(f"{len(file_list)} files found. Reading ...")
-    with multiprocessing.Pool(processes=multiprocessing.cpu_count()//2) as pool:
+    read_cores = multiprocessing.cpu_count()-1
+    print(f"{len(file_list)} files found. Reading with {read_cores} core(s) ...")
+    with multiprocessing.Pool(processes=read_cores) as pool:
         df_list = pool.starmap(read_clean_file, file_list)
 
     valids_df = [df for df in df_list if isinstance(df, pd.DataFrame)]
