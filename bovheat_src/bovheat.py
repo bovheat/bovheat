@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import itertools
+import multiprocessing
 import sys
 import textwrap
 import warnings
@@ -12,6 +13,7 @@ warnings.filterwarnings("ignore", "(?s).*MATPLOTLIBDATA.*", category=UserWarning
 import pandas as pd
 
 from bovheat_src import bh_input, bh_output
+
 
 # %%
 def print_welcome():
@@ -250,6 +252,15 @@ def main():
             + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         )
 
+    if args.outputname:
+        out_filename = args.outputname
+    else:
+        out_filename = (
+            f"BovHEAT_start{start_parameters['start_dim']}"
+            + f"_stop{start_parameters['stop_dim']}_t{start_parameters['threshold']}_"
+            + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        )
+
     print("\nCalculation finished - Writing xlsx file...")
     bh_output.write_xlsx(heats_filtered_df, filename=out_filename)
 
@@ -265,4 +276,5 @@ def main():
 
 
 if __name__ == "__main__":
+    multiprocessing.freeze_support()  # adds support for multiprocessing in pyinstaller executables
     main()
