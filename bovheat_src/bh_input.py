@@ -137,7 +137,7 @@ def read_clean_file(root, file_name, translation_table):
 
 
 # %%
-def get_source_data(language, core_count, relative_path=""):
+def get_source_data(language, core_count=0, relative_path=""):
     """Reads all .xslx and .xls files in current directory and merges into one dataframe.
 
     Files have to include the following column headers names:
