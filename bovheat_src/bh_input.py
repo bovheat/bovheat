@@ -60,11 +60,15 @@ def get_args():
     )
 
     parser.add_argument(
-        "-o",
-        "--outputname",
-        type=str,
-        default="",
-        help="specify output filename for xlsx and pdf",
+        "-o", "--outputname", type=str, default="", help="specify output filename for xlsx and pdf",
+    )
+
+    parser.add_argument(
+        "-c",
+        "--cores",
+        type=int,
+        default="0",
+        help="specify amount of cores to use, default results in logical core count -1",
     )
 
     args = parser.parse_args()
@@ -72,6 +76,9 @@ def get_args():
     if args.startstop:
         if args.startstop[0] > args.startstop[1]:
             parser.error("Please choose start < stop.")
+
+    if args.cores > multiprocessing.cpu_count():
+        parser.error("Core count too high for this system.")
 
     return args
 
@@ -104,15 +111,16 @@ def get_userinput():
             }
 
 
-
 def read_clean_file(root, file_name, translation_table):
     try:
         data = pd.read_excel(
-            os.path.join(root, file_name), usecols=list(translation_table.keys()), sheet_name=0,
+            os.path.join(root, file_name),
+            usecols=list(translation_table.keys()),
+            sheet_name=0,
             index=True,
-            )
+        )
     except:
-        print(f"{file_name} ...SKIPPED", )
+        print(f"{file_name} ...SKIPPED",)
         return None
 
     print(f"\r{file_name}", end="")
@@ -129,7 +137,7 @@ def read_clean_file(root, file_name, translation_table):
 
 
 # %%
-def get_source_data(language, relative_path=""):
+def get_source_data(language, core_count, relative_path=""):
     """Reads all .xslx and .xls files in current directory and merges into one dataframe.
 
     Files have to include the following column headers names:
@@ -183,7 +191,6 @@ def get_source_data(language, relative_path=""):
     if language == "ger":
         translation_table = translation_german
 
-    sum_df = pd.DataFrame()
     file_list = []
     print(f"Searching for files in directory {folderpath}:")
     for root, _, files in os.walk(folderpath):
@@ -191,7 +198,11 @@ def get_source_data(language, relative_path=""):
             if name.endswith((".xlsx", ".xls")) and not name.startswith((".", "~", "BovHEAT")):
                 file_list.append((root, name, translation_table))
 
-    read_cores = multiprocessing.cpu_count()-1
+    if core_count == 0:
+        read_cores = multiprocessing.cpu_count() - 1
+    else:
+        read_cores = core_count
+
     print(f"{len(file_list)} files found. Reading with {read_cores} core(s) ...")
     with multiprocessing.Pool(processes=read_cores) as pool:
         df_list = pool.starmap(read_clean_file, file_list)

@@ -205,7 +205,7 @@ def main():
     try:
         print("Reading source")
         source_df = bh_input.get_source_data(
-            start_parameters["language"], relative_path=args.relative_path
+            start_parameters["language"], core_count=args.cores, relative_path=args.relative_path,
         )
     except Exception as e:
         print("Error:", e)
