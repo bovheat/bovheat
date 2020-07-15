@@ -2,12 +2,12 @@ import argparse
 import os
 
 import multiprocessing
+from itertools import starmap
 
 import pandas as pd
 
 
 def get_start_parameters(args):
-
     # interactive mode
     if args.startstop is None:
         return get_userinput()
@@ -22,7 +22,6 @@ def get_start_parameters(args):
 
 
 def get_args():
-
     parser = argparse.ArgumentParser(
         description="# Bovine Heat Analysis Tool (BovHEAT) #  \
         \n\nBovHEAT starts in interactive mode, if startstop is not provided",
@@ -68,7 +67,7 @@ def get_args():
         "--cores",
         type=int,
         default="0",
-        help="specify amount of cores to use, default results in logical core count -1",
+        help="specify amount of cores to use, default 0 results in logical core count -1",
     )
 
     args = parser.parse_args()
@@ -85,7 +84,6 @@ def get_args():
 
 # %%
 def get_userinput():
-
     # ToDo Check start_dim < stop_dim
     while True:
         language = input("Column header language, type either eng or ger: ")
@@ -198,14 +196,17 @@ def get_source_data(language, core_count=0, relative_path=""):
             if name.endswith((".xlsx", ".xls")) and not name.startswith((".", "~", "BovHEAT")):
                 file_list.append((root, name, translation_table))
 
-    if core_count == 0:
-        read_cores = multiprocessing.cpu_count() - 1
+    if core_count == 1:  # do not use multiprocessing
+        df_list = list(starmap(read_clean_file, file_list))
     else:
-        read_cores = core_count
+        if core_count == 0:  # auto core count selection
+            read_cores = multiprocessing.cpu_count() - 1
+        else:  # core count selected
+            read_cores = core_count
 
-    print(f"{len(file_list)} files found. Reading with {read_cores} core(s) ...")
-    with multiprocessing.Pool(processes=read_cores) as pool:
-        df_list = pool.starmap(read_clean_file, file_list)
+        print(f"{len(file_list)} files found. Reading with {read_cores} core(s) ...")
+        with multiprocessing.Pool(processes=read_cores) as pool:
+            df_list = pool.starmap(read_clean_file, file_list)
 
     valids_df = [df for df in df_list if isinstance(df, pd.DataFrame)]
     if len(valids_df) < 1:
