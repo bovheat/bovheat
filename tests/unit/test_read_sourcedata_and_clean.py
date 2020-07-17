@@ -2,7 +2,7 @@
 import pytest
 from bovheat_src import bh_input, bovheat
 
-# runs tests with multiprocessing. 0: auto-core, 1: disabled, 2: fixed 2 cores
+# runs tests with multiprocessing. 0: auto (max available -1), 1: disabled, 2: fixed 2 cores
 @pytest.fixture(params=[0, 1, 2])
 def cpu_count(request):
     return request.param

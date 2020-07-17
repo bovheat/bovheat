@@ -67,7 +67,8 @@ def get_args():
         "--cores",
         type=int,
         default="0",
-        help="specify amount of cores to use, default 0 results in logical core count -1",
+        help="specify amount of logical cores to use,\
+        default 0: auto (max available -1), 1: disable multiprocessing, >1: fixed core amount",
     )
 
     args = parser.parse_args()
