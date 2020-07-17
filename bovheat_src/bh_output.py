@@ -64,6 +64,7 @@ def write_pdf(heats_df, sections_df, threshold, filename):
 
     pdf_file = PdfPages(filename)  # Start PDF file
 
+
     heats_df.groupby(["foldername", "Cow Number", "lactation_adj"]).apply(
         lambda df: build_pdf_page(
             cowdf=sections_df[
