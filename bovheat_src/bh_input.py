@@ -196,15 +196,18 @@ def get_source_data(language, core_count=0, relative_path=""):
             if name.endswith((".xlsx", ".xls")) and not name.startswith((".", "~", "BovHEAT")):
                 file_list.append((root, name, translation_table))
 
+    print(len(file_list), "files found.", end="")
+
     if core_count == 1:  # do not use multiprocessing
+        print(f"Reading with {core_count} core(s) ...")
         df_list = list(starmap(read_clean_file, file_list))
     else:
         if core_count == 0:  # auto core count selection
             read_cores = multiprocessing.cpu_count() - 1
-        else:  # core count selected
+        else:  # core count fixed
             read_cores = core_count
 
-        print(f"{len(file_list)} files found. Reading with {read_cores} core(s) ...")
+        print(f"Reading with {read_cores} core(s) ...")
         with multiprocessing.Pool(processes=read_cores) as pool:
             df_list = pool.starmap(read_clean_file, file_list)
 
