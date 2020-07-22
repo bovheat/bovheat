@@ -69,7 +69,7 @@ def get_cleaned_copy(cowdf):
 
 # %%
 def calc_calving_date(cowdf):
-    """Tries to find calving date from days in lacation based on lactation number received
+    """Tries to find calving date from days in lacation (DIM)
 
     Arguments:
         cowdf {[type]} -- [description]
@@ -199,6 +199,7 @@ def main():
     print_welcome()
     args = bh_input.get_args()
     start_parameters = bh_input.get_start_parameters(args)
+    
 
     # Scan all file root and subfolders for xls and xslx files.
     # Raise exception and exit if none are found.
@@ -242,15 +243,6 @@ def main():
 
     heats_df = heats_df.reset_index().drop(columns="level_3")
     heats_filtered_df = heats_df[heats_df["act_usable"] > 0]
-
-    if args.outputname is not None:
-        out_filename = args.outputname
-    else:
-        out_filename = (
-            f"BovHEAT_start{start_parameters['start_dim']}"
-            + f"_stop{start_parameters['stop_dim']}_t{start_parameters['threshold']}_"
-            + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        )
 
     if args.outputname:
         out_filename = args.outputname
