@@ -38,13 +38,14 @@ def get_args():
     )
 
     parser.add_argument(
-        "-s",
-        "--startstop",
-        nargs=2,
+        "-c",
+        "--cores",
         type=int,
-        metavar=("start-dim", "stop-dim"),
-        help="negative values are allowed",
+        default="0",
+        help="specify amount of logical cores to use,\
+        default 0: auto (max available -1), 1: disable multiprocessing, >1: fixed core amount",
     )
+
     parser.add_argument(
         "-l",
         "--language",
@@ -53,6 +54,24 @@ def get_args():
         default="eng",
         help="language of column headings, default=eng",
     )
+
+    parser.add_argument(
+        "-o",
+        "--outputname",
+        type=str,
+        default="",
+        help="specify output filename for result xlsx and pdf",
+    )
+
+    parser.add_argument(
+        "-s",
+        "--startstop",
+        nargs=2,
+        type=int,
+        metavar=("start-dim", "stop-dim"),
+        help="negative values are allowed",
+    )
+
     parser.add_argument(
         "-t",
         "--threshold",
@@ -61,19 +80,6 @@ def get_args():
         metavar="[0-100]",
         default=35,
         help="threshold for heat detection, default=35",
-    )
-
-    parser.add_argument(
-        "-o", "--outputname", type=str, default="", help="specify output filename for xlsx and pdf",
-    )
-
-    parser.add_argument(
-        "-c",
-        "--cores",
-        type=int,
-        default="0",
-        help="specify amount of logical cores to use,\
-        default 0: auto (max available -1), 1: disable multiprocessing, >1: fixed core amount",
     )
 
     args = parser.parse_args()
