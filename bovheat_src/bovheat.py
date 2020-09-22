@@ -98,7 +98,7 @@ def calc_calving_date(cowdf):
 
 
 # %%
-def cut_time_window(cowdf, start_dim, stop_dim):
+def cut_time_window(cowdf, start_dim, stop_dim, interpolation_limit):
     timeframe_dfs = pd.DataFrame()
 
     calving_dates = [date for date in cowdf["calving_date"].unique() if not pd.isnull(date)]
@@ -107,7 +107,6 @@ def cut_time_window(cowdf, start_dim, stop_dim):
         date_start = calving_date + pd.Timedelta(days=start_dim)
         date_end = calving_date + pd.Timedelta(days=stop_dim)
 
-        # ToDo: This excludes the date of date_end, ok?
         datetime_range = pd.date_range(date_start, date_end, freq="2H", closed="left")
         base_df = pd.DataFrame(data={"datetime": datetime_range})
 
@@ -115,7 +114,7 @@ def cut_time_window(cowdf, start_dim, stop_dim):
 
         # interpolates, especially over 10:00pm missing values
         timeframe_df["Activity Change"] = timeframe_df["Activity Change"].interpolate(
-            limit_area="inside", limit=2
+            limit_area="inside", limit=interpolation_limit
         )
         timeframe_df["lactation_adj"] = cowdf[cowdf["calving_date"] == calving_date][
             "Lactation Number"
@@ -131,8 +130,6 @@ def cut_time_window(cowdf, start_dim, stop_dim):
 
 
 # %%
-
-
 def calc_heats(cowdf, threshold):
     MINIMUM_HOURS_APART = 10
 
@@ -199,7 +196,6 @@ def main():
     print_welcome()
     args = bh_input.get_args()
     start_parameters = bh_input.get_start_parameters(args)
-    
 
     # Scan all file root and subfolders for xls and xslx files.
     # Raise exception and exit if none are found.
@@ -234,6 +230,7 @@ def main():
         cut_time_window,
         start_dim=start_parameters["start_dim"],
         stop_dim=start_parameters["stop_dim"],
+        interpolation_limit=args.interpolation_limit,
     )
     sections_df = sections_df.reset_index().drop(columns="level_2")
 

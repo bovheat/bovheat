@@ -47,6 +47,15 @@ def get_args():
     )
 
     parser.add_argument(
+        "-i",
+        "--interpolation_limit",
+        type=int,
+        metavar="[0-n]",
+        default=2,
+        help="Maximum number of consecutive missing values to fill. 0 disables interpolation",
+    )
+
+    parser.add_argument(
         "-l",
         "--language",
         type=str,
@@ -84,12 +93,18 @@ def get_args():
 
     args = parser.parse_args()
 
+    if args.cores > multiprocessing.cpu_count():
+        parser.error("Core count too high for this system.")
+
+    if args.interpolation_limit is not None:
+        if args.interpolation_limit < 0:
+            parser.error("Please choose a value greater or equal 0")
+        if args.interpolation_limit == 0:
+            args.interpolation_limit = None
+
     if args.startstop:
         if args.startstop[0] > args.startstop[1]:
             parser.error("Please choose start < stop.")
-
-    if args.cores > multiprocessing.cpu_count():
-        parser.error("Core count too high for this system.")
 
     return args
 
