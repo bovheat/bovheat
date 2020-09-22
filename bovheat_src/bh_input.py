@@ -28,8 +28,13 @@ def get_args():
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
 
+    # positional argument
     parser.add_argument(
-        "relative_path", type=str, nargs="?", default="",
+        "relative_path",
+        type=str,
+        nargs="?",
+        default="",
+        help="relative path to folder containing SCR xls(x) files",
     )
 
     parser.add_argument(
