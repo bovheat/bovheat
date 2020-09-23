@@ -1,7 +1,6 @@
 import argparse
-import os
-
 import multiprocessing
+import os
 from itertools import starmap
 
 import pandas as pd
@@ -111,7 +110,6 @@ def get_args():
 
 # %%
 def get_userinput():
-    # ToDo Check start_dim < stop_dim
     while True:
         language = input("Column header language, type either eng or ger: ")
         start_dim = int(input("Choose DIM to start, e.g. 0: "))
@@ -178,6 +176,9 @@ def get_source_data(language, core_count=0, relative_path=""):
 
     Parameters
     ----------
+    core_count : int
+        How many logical core to use. 0 means auto
+
     language : str
         Select column header language, ger or eng
 
