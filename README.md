@@ -13,6 +13,24 @@ The user can define the desired threshold for estrus detection and the observati
 Results are delivered as a wide and long formatted XLSX file and a PDF with activity line graph 
 visualizations for each cow.
 
+
+Table of Contents
+=================
+
+   * [BovHEAT](#bovheat)
+  * [How to cite](#how-to-cite)
+  * [Demo](#demo)
+    * [Output](#output)
+    * [Data](#data)
+  * [Download and usage](#download-and-usage)
+  * [Command-line options](#command-line-options)
+  * [Requirements and constraints](#requirements-and-constraints)
+    * [SCR file requirements](#scr-file-requirements)
+    * [OS Requirements](#os-requirements)
+  * [Development](#development)
+     * [Optional/Extras](#optionalextras)
+
+
 ## How to cite
 upcoming
 
@@ -27,7 +45,7 @@ To try BovHEAT on your machine and generate the output for yourself, download th
  from [example/output/data_zipped.zip](example/data/data_zipped.zip).
 Run the BovHeat in parent folder according to the steps below. The column language is eng.
 
-## Usage
+## Download and Usage
 
 #### 1. Download
 We provide a one-file executable for Windows, Linux and macOS.
