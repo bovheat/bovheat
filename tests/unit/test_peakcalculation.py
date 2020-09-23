@@ -12,6 +12,8 @@ class TestBovHeat(unittest.TestCase):
             "Days in Lactation": [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 0, 2],
             "datetime": pd.date_range("2015-02-24 00:00:00", periods=15, freq="2H"),
             "calving_date": [pd.to_datetime("2015-02-20 00:00:00")] * 15,
+            "foldername": ["testfarm"] * 15,
+            "Cow Number": [12345] * 15,
         }
         input_df = pd.DataFrame(data=input_data)
 

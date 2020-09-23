@@ -2,7 +2,6 @@
 
 import itertools
 import multiprocessing
-import sys
 import textwrap
 import warnings
 from datetime import datetime
@@ -69,7 +68,7 @@ def get_cleaned_copy(cowdf):
 
 # %%
 def calc_calving_date(cowdf):
-    """Tries to find calving date from days in lacation (DIM)
+    """Tries to find calving date from days in lactation (DIM)
 
     Arguments:
         cowdf {[type]} -- [description]
@@ -91,7 +90,6 @@ def calc_calving_date(cowdf):
         calving_datetime = min_dim_date - pd.Timedelta(days=min_dim_value)
         return calving_datetime.normalize()
 
-    # ToDo: Log warning and errors
     print(" # NOT FOUND", end="")
 
     return None
@@ -99,6 +97,13 @@ def calc_calving_date(cowdf):
 
 # %%
 def cut_time_window(cowdf, start_dim, stop_dim, interpolation_limit):
+    print(
+        "\r Selecting time window for",
+        cowdf["foldername"].iloc[0],
+        cowdf["Cow Number"].iloc[0],
+        end="",
+    )
+
     timeframe_dfs = pd.DataFrame()
 
     calving_dates = [date for date in cowdf["calving_date"].unique() if not pd.isnull(date)]
@@ -132,6 +137,13 @@ def cut_time_window(cowdf, start_dim, stop_dim, interpolation_limit):
 # %%
 def calc_heats(cowdf, threshold):
     MINIMUM_HOURS_APART = 10
+
+    print(
+        "\r Calculating heats for",
+        cowdf["foldername"].iloc[0],
+        cowdf["Cow Number"].iloc[0],
+        end="",
+    )
 
     act_usable = cowdf["Activity Change"].count() / (len(cowdf)) * 100
     cowdf.reset_index(drop=True, inplace=True)
@@ -204,8 +216,8 @@ def main():
         source_df = bh_input.get_source_data(
             start_parameters["language"], core_count=args.cores, relative_path=args.relative_path,
         )
-    except Exception as e:
-        print("Error:", e)
+    except Exception as exception:
+        print("Error:", exception)
         input("Press Enter to exit.")
         raise SystemExit
 
