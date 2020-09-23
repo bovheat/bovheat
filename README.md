@@ -64,6 +64,30 @@ Choose the desired threshold for estrus detection. Recommended is a threshold of
 Observe the progress on screen. Results are delivered as a wide and long formatted XLSX file and
 a PDF file with activity line graph visualizations for each cow.
 
+## Command-line options
+
+BovHEAT starts in interactive mode, if startstop is not provided
+```
+positional arguments:
+  relative_path         relative path to folder containing SCR xls(x) files
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -c CORES, --cores CORES
+                        specify amount of logical cores to use, default 0: auto (max available-1),
+                        1: disable multiprocessing, >1: fixed core amount
+  -i [0-n], --interpolation_limit [0-n]
+                        Maximum number of consecutive missing values to fill. 0 disables interpolation
+  -l {ger,eng}, --language {ger,eng}
+                        language of column headings, default=eng
+  -o OUTPUTNAME, --outputname OUTPUTNAME
+                        specify output filename for result xlsx and pdf
+  -s start-dim stop-dim, --startstop start-dim stop-dim
+                        negative values are allowed
+  -t [0-100], --threshold [0-100]
+                        threshold for heat detection, default=35
+```
+
 ## Requirements and constraints
 
 #### SCR file requirements
