@@ -99,6 +99,14 @@ def calc_calving_date(cowdf):
 
 # %%
 def cut_time_window(cowdf, start_dim, stop_dim, interpolation_limit):
+
+    print(
+        "\r Selecting time window for",
+        cowdf["foldername"].iloc[0],
+        cowdf["Cow Number"].iloc[0],
+        end="",
+    )
+
     timeframe_dfs = pd.DataFrame()
 
     calving_dates = [date for date in cowdf["calving_date"].unique() if not pd.isnull(date)]
@@ -132,6 +140,13 @@ def cut_time_window(cowdf, start_dim, stop_dim, interpolation_limit):
 # %%
 def calc_heats(cowdf, threshold):
     MINIMUM_HOURS_APART = 10
+
+    print(
+        "\r Calculating heats for",
+        cowdf["foldername"].iloc[0],
+        cowdf["Cow Number"].iloc[0],
+        end="",
+    )
 
     act_usable = cowdf["Activity Change"].count() / (len(cowdf)) * 100
     cowdf.reset_index(drop=True, inplace=True)
