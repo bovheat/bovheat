@@ -28,38 +28,13 @@ def get_args():
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
 
+    # positional argument
     parser.add_argument(
-        "relative_path", type=str, nargs="?", default="",
-    )
-
-    parser.add_argument(
-        "-s",
-        "--startstop",
-        nargs=2,
-        type=int,
-        metavar=("start-dim", "stop-dim"),
-        help="negative values are allowed",
-    )
-    parser.add_argument(
-        "-l",
-        "--language",
+        "relative_path",
         type=str,
-        choices=["ger", "eng"],
-        default="eng",
-        help="language of column headings, default=eng",
-    )
-    parser.add_argument(
-        "-t",
-        "--threshold",
-        type=int,
-        choices=range(0, 101),
-        metavar="[0-100]",
-        default=35,
-        help="threshold for heat detection, default=35",
-    )
-
-    parser.add_argument(
-        "-o", "--outputname", type=str, default="", help="specify output filename for xlsx and pdf",
+        nargs="?",
+        default="",
+        help="relative path to folder containing SCR xls(x) files",
     )
 
     parser.add_argument(
@@ -71,14 +46,65 @@ def get_args():
         default 0: auto (max available -1), 1: disable multiprocessing, >1: fixed core amount",
     )
 
+    parser.add_argument(
+        "-i",
+        "--interpolation_limit",
+        type=int,
+        metavar="[0-n]",
+        default=2,
+        help="Maximum number of consecutive missing values to fill. 0 disables interpolation",
+    )
+
+    parser.add_argument(
+        "-l",
+        "--language",
+        type=str,
+        choices=["ger", "eng"],
+        default="eng",
+        help="language of column headings, default=eng",
+    )
+
+    parser.add_argument(
+        "-o",
+        "--outputname",
+        type=str,
+        default="",
+        help="specify output filename for result xlsx and pdf",
+    )
+
+    parser.add_argument(
+        "-s",
+        "--startstop",
+        nargs=2,
+        type=int,
+        metavar=("start-dim", "stop-dim"),
+        help="negative values are allowed",
+    )
+
+    parser.add_argument(
+        "-t",
+        "--threshold",
+        type=int,
+        choices=range(0, 101),
+        metavar="[0-100]",
+        default=35,
+        help="threshold for heat detection, default=35",
+    )
+
     args = parser.parse_args()
+
+    if args.cores > multiprocessing.cpu_count():
+        parser.error("Core count too high for this system.")
+
+    if args.interpolation_limit is not None:
+        if args.interpolation_limit < 0:
+            parser.error("Please choose a value greater or equal 0")
+        if args.interpolation_limit == 0:
+            args.interpolation_limit = None
 
     if args.startstop:
         if args.startstop[0] > args.startstop[1]:
             parser.error("Please choose start < stop.")
-
-    if args.cores > multiprocessing.cpu_count():
-        parser.error("Core count too high for this system.")
 
     return args
 

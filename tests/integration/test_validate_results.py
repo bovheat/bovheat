@@ -7,7 +7,7 @@ from bovheat_src import bovheat
 
 def test_complete_runthrough(monkeypatch):
     # add custom argv
-    additional_argv = "example/data -s -5 30 -l eng -t 35 -o out_file".split(" ")
+    additional_argv = "example/data -s -5 30 -l eng -t 35 -o out_file -i 2".split(" ")
     monkeypatch.setattr(sys, "argv", [sys.argv[0]] + additional_argv)
     monkeypatch.setattr("sys.stdin", io.StringIO("enter"))
 
