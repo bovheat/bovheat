@@ -36,7 +36,7 @@ def get_cleaned_copy(cowdf):
     """
 
     print(
-        "\r Cleaning data for", cowdf["foldername"].iloc[0], cowdf["Cow Number"].iloc[0], end="",
+        "\r Cleaning data for", cowdf["foldername"].iloc[0], cowdf["Cow Number"].iloc[0], end="".ljust(20),
     )
 
     cowdf = cowdf.copy()
@@ -77,7 +77,7 @@ def calc_calving_date(cowdf):
         "\r Calculating calving date for",
         cowdf["foldername"].iloc[0],
         cowdf["Cow Number"].iloc[0],
-        end="",
+        end="".ljust(20),
     )
 
     cowdf.reset_index(drop=True, inplace=True)
@@ -90,8 +90,6 @@ def calc_calving_date(cowdf):
         calving_datetime = min_dim_date - pd.Timedelta(days=min_dim_value)
         return calving_datetime.normalize()
 
-    print(" # NOT FOUND", end="")
-
     return None
 
 
@@ -101,7 +99,7 @@ def cut_time_window(cowdf, start_dim, stop_dim, interpolation_limit):
         "\r Selecting time window for",
         cowdf["foldername"].iloc[0],
         cowdf["Cow Number"].iloc[0],
-        end="",
+        end="".ljust(20),
     )
 
     timeframe_dfs = pd.DataFrame()
@@ -142,7 +140,7 @@ def calc_heats(cowdf, threshold):
         "\r Calculating heats for",
         cowdf["foldername"].iloc[0],
         cowdf["Cow Number"].iloc[0],
-        end="",
+        end="".ljust(20),
     )
 
     act_usable = cowdf["Activity Change"].count() / (len(cowdf)) * 100
@@ -265,7 +263,7 @@ def main():
     print("\nCalculation finished - Writing xlsx file...")
     bh_output.write_xlsx(heats_filtered_df, filename=out_filename)
 
-    print("\nWriting visualisation to pdf file...")
+    print("\nWriting visualisation to pdf file... you can cancel this last step at any time.")
     bh_output.write_pdf(
         heats_filtered_df,
         sections_df=sections_df,

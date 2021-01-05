@@ -143,10 +143,10 @@ def read_clean_file(root, file_name, translation_table):
             index=True,
         )
     except:
-        print(f"{file_name} ...SKIPPED",)
+        print(f"\r{file_name} ...SKIPPED")
         return None
 
-    print(f"\r{file_name}", end="")
+    print(f"\r{file_name}", end="".ljust(20))
     data.rename(columns=translation_table, inplace=True)
 
     # removes empty rows, including possible footers rows
