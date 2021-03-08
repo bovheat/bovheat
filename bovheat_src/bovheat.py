@@ -36,7 +36,10 @@ def get_cleaned_copy(cowdf):
     """
 
     print(
-        "\r Cleaning data for", cowdf["foldername"].iloc[0], cowdf["Cow Number"].iloc[0], end="".ljust(20),
+        "\r Cleaning data for",
+        cowdf["foldername"].iloc[0],
+        cowdf["Cow Number"].iloc[0],
+        end="".ljust(20),
     )
 
     cowdf = cowdf.copy()
@@ -133,7 +136,7 @@ def cut_time_window(cowdf, start_dim, stop_dim, interpolation_limit):
 
 
 # %%
-def calc_heats(cowdf, threshold):
+def calc_heats(cowdf, threshold, minheatlength):
     MINIMUM_HOURS_APART = 10
 
     print(
@@ -170,6 +173,8 @@ def calc_heats(cowdf, threshold):
 
     for _, group in itertools.groupby(enumerate(gte_threshold_indexes), lambda x: x[1] - x[0]):
         peak_groups.append(list(map(lambda x: x[1], group)))
+
+    peak_groups = [group for group in peak_groups if len(group) >= minheatlength]
 
     for index, heat_group in enumerate(peak_groups):
         heat_no = index + 1
@@ -245,7 +250,7 @@ def main():
     sections_df = sections_df.reset_index().drop(columns="level_2")
 
     heats_df = sections_df.groupby(["foldername", "Cow Number", "lactation_adj"]).apply(
-        calc_heats, threshold=start_parameters["threshold"]
+        calc_heats, start_parameters["threshold"], start_parameters["minheatlength"]
     )
 
     heats_df = heats_df.reset_index().drop(columns="level_3")
