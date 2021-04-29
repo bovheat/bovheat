@@ -134,6 +134,7 @@ ubuntu-18.04
 
 
 ## Development
+The authors recommend to use Python 3.8.  
 To set up the development environment install [poetry](https://python-poetry.org/). And run:
 ```
 poetry install

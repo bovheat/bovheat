@@ -268,7 +268,7 @@ def main():
     print("\nCalculation finished - Writing xlsx file...")
     bh_output.write_xlsx(heats_filtered_df, filename=out_filename)
 
-    print("\nWriting visualisation to pdf file... you can cancel this last step at any time.")
+    print("\nWriting PDF file... you can cancel this step at any time.")
     bh_output.write_pdf(
         heats_filtered_df,
         sections_df=sections_df,
