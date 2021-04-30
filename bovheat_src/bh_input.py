@@ -17,6 +17,7 @@ def get_start_parameters(args):
         "start_dim": args.startstop[0],
         "stop_dim": args.startstop[1],
         "threshold": args.threshold,
+        "minheatlength": args.minheatlength,
     }
 
 
@@ -61,6 +62,16 @@ def get_args():
         choices=["ger", "eng"],
         default="eng",
         help="language of column headings, default=eng",
+    )
+
+    parser.add_argument(
+        "-m",
+        "--minheatlength",
+        type=int,
+        choices=range(1, 101),
+        metavar="[0-100]",
+        default=1,
+        help="minimum number of heat observations required to count as a heat, default=1",
     )
 
     parser.add_argument(
@@ -115,12 +126,14 @@ def get_userinput():
         start_dim = int(input("Choose DIM to start, e.g. 0: "))
         stop_dim = int(input("Choose DIM to stop, e.g. 30: "))
         threshold = int(input("Threshold between 0 and 100 to use, e.g. 35: "))
+        minheatlength = int(input("Minimum numbers of heat observations required to count as a heat: "))
 
         print(
             f"# You selected: \
             \nStart Dim is day {start_dim} \
             \nStop Dim is day {stop_dim} \
-            \nDetection threshold of {threshold}"
+            \nDetection threshold of {threshold} \
+            \nMinimum heat observations number of {minheatlength}"
         )
 
         userchoice = input("Please type c to continue or r to retry: ")
@@ -131,6 +144,7 @@ def get_userinput():
                 "start_dim": start_dim,
                 "stop_dim": stop_dim,
                 "threshold": threshold,
+                "minheatlength": minheatlength,
             }
 
 

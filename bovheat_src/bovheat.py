@@ -36,7 +36,10 @@ def get_cleaned_copy(cowdf):
     """
 
     print(
-        "\r Cleaning data for", cowdf["foldername"].iloc[0], cowdf["Cow Number"].iloc[0], end="".ljust(20),
+        "\r Cleaning data for",
+        cowdf["foldername"].iloc[0],
+        cowdf["Cow Number"].iloc[0],
+        end="".ljust(20),
     )
 
     cowdf = cowdf.copy()
@@ -133,7 +136,7 @@ def cut_time_window(cowdf, start_dim, stop_dim, interpolation_limit):
 
 
 # %%
-def calc_heats(cowdf, threshold):
+def calc_heats(cowdf, threshold, minheatlength):
     MINIMUM_HOURS_APART = 10
 
     print(
@@ -170,6 +173,8 @@ def calc_heats(cowdf, threshold):
 
     for _, group in itertools.groupby(enumerate(gte_threshold_indexes), lambda x: x[1] - x[0]):
         peak_groups.append(list(map(lambda x: x[1], group)))
+
+    peak_groups = [group for group in peak_groups if len(group) >= minheatlength]
 
     for index, heat_group in enumerate(peak_groups):
         heat_no = index + 1
@@ -245,7 +250,7 @@ def main():
     sections_df = sections_df.reset_index().drop(columns="level_2")
 
     heats_df = sections_df.groupby(["foldername", "Cow Number", "lactation_adj"]).apply(
-        calc_heats, threshold=start_parameters["threshold"]
+        calc_heats, start_parameters["threshold"], start_parameters["minheatlength"]
     )
 
     heats_df = heats_df.reset_index().drop(columns="level_3")
@@ -256,14 +261,15 @@ def main():
     else:
         out_filename = (
             f"BovHEAT_start{start_parameters['start_dim']}"
-            + f"_stop{start_parameters['stop_dim']}_t{start_parameters['threshold']}_"
+            + f"_stop{start_parameters['stop_dim']}_t{start_parameters['threshold']}"
+            + f"_obs{start_parameters['minheatlength']}_"
             + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         )
 
     print("\nCalculation finished - Writing xlsx file...")
     bh_output.write_xlsx(heats_filtered_df, filename=out_filename)
 
-    print("\nWriting visualisation to pdf file... you can cancel this last step at any time.")
+    print("\nWriting PDF file... you can cancel this step at any time.")
     bh_output.write_pdf(
         heats_filtered_df,
         sections_df=sections_df,
