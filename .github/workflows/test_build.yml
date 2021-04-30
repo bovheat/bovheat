@@ -77,8 +77,7 @@ jobs:
         poetry install -E pyinstaller
     - name: Build executable
       run: |
-        poetry run pyinstaller --onefile --osx-bundle-identifier org.bovheat.bovheat bovheat_src/bovheat.py
-        # --icon
+        poetry run pyinstaller --onefile --osx-bundle-identifier org.bovheat.bovheat --icon bovheat_icon.ico bovheat_src/bovheat.py
     - name: Upload artifact ${{ matrix.os }}
       uses: actions/upload-artifact@v1
       with:
