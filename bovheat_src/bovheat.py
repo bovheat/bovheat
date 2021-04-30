@@ -261,7 +261,8 @@ def main():
     else:
         out_filename = (
             f"BovHEAT_start{start_parameters['start_dim']}"
-            + f"_stop{start_parameters['stop_dim']}_t{start_parameters['threshold']}_"
+            + f"_stop{start_parameters['stop_dim']}_t{start_parameters['threshold']}"
+            + f"_obs{start_parameters['minheatlength']}_"
             + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         )
 
