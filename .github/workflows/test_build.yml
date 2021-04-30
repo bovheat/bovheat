@@ -75,11 +75,15 @@ jobs:
         pip install poetry
         poetry install --no-dev
         poetry install -E pyinstaller
+    - name: Create file name
+      run: |
+        echo "today=$(date +'%Y%m%d')" >> $GITHUB_ENV
+      shell: bash
     - name: Build executable
       run: |
-        poetry run pyinstaller --onefile --osx-bundle-identifier org.bovheat.bovheat --icon bovheat_icon.ico bovheat_src/bovheat.py
+        poetry run pyinstaller bovheat_src/bovheat.py --onefile --osx-bundle-identifier org.bovheat.bovheat --icon bovheat_icon.ico --name BovHeat_${{runner.os}}_${{env.today}}
     - name: Upload artifact ${{ matrix.os }}
       uses: actions/upload-artifact@v1
       with:
-        name: bovHEAT-for-${{ runner.os }}
+        name: BovHeat_${{ runner.os }}_${{ env.today }}
         path: dist/
