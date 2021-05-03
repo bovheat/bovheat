@@ -17,7 +17,7 @@ from bovheat_src import bh_input, bh_output
 # %%
 def print_welcome():
     welcome_message = """
-    Bovine Heat Analysis Tool (BovHEAT) - Version 1.1.0
+    Bovine Heat Detection and Analysis Tool (BovHEAT) - Version 1.2.0
     https://github.com/bovheat/bovheat
     """
 
