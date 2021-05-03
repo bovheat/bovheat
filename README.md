@@ -3,17 +3,21 @@
 [![codecov](https://codecov.io/gh/bovheat/bovheat/branch/master/graph/badge.svg)](https://codecov.io/gh/bovheat/bovheat)
 # BovHEAT
 
-Bovine Heat Analysis Tool (BovHEAT) - Automated Heat detection and analysis tool for "SCR Heatime"
+Bovine Heat Detection and Analysis Tool (BovHEAT) - Automated Heat detection and analysis tool for "SCR Heatime"
 (SCR Engineers Ltd., Netanya, Israel) a neck-mounted accelerometer for automated activity monitoring in cows.
 This tool analyses the raw data and performs error detection and correction. Additional data sources will be
 supported in the future.
 
-<img src="docs/img/2020-05-15_heat_example_6.png" width="600" alt="Heat Example Image"> <br>
+<img src="docs/img/graphical_abstract.png" width="830" alt="Graphical Abstract"> <br>
 We provide a one-file executable, which reads and processes SCR files automatically. 
 The user can define the desired threshold for estrus detection and the observation period. 
 Results are delivered as a wide and long formatted XLSX file and a PDF with activity line graph 
-visualizations for each cow.
+visualizations for each cow. <br>
 
+<details>
+<summary>Click here for a detailed heat description image</summary>
+<img src="docs/img/detailed_heat_description.png" width="830" alt="detailed heat description">
+</details>
 
 Table of Contents
 =================
@@ -41,6 +45,12 @@ upcoming
 Example output as XLSX and PDF files can be examined at [example/output/](example/output/).
 For this example an observation period of 5 days before till 30 days after calving was selected.
 The estrus detection threshold was set at 35.
+
+<details>
+<summary>Click here for a line graph example from a pdf output file</summary>
+<img src="docs/img/pdf_single_line_graph.png" width="830" alt="pdf single line graph">
+</details>
+
 #### Data
 To try BovHEAT on your machine and generate the output for yourself, download the zipped example data
  from [example/output/data_zipped.zip](example/data/data_zipped.zip).
@@ -73,11 +83,13 @@ Column language of the SCR files
 
 `Start and Stop DIM`  
 Choose the start and stop DIM to select the observation interval.  
- As an example: Start -5 and Stop 35 would include 5 days before till 35 days after calving.  
+As an example: Start -5 and Stop 35 would include 5 days before till 35 days after calving.  
 
 `Threshold`  
 Choose the desired threshold for estrus detection. Recommended is a threshold of 35.  
 
+`Minimum heat length`   
+Choose a minimum number of heat observations required to count as a heat. Default is 1.
 
 #### 4. Processing and results
 Observe the progress on screen. Results are delivered as a wide and long formatted XLSX file and
@@ -99,6 +111,8 @@ optional arguments:
                         Maximum number of consecutive missing values to fill. 0 disables interpolation
   -l {ger,eng}, --language {ger,eng}
                         language of column headings, default=eng
+  -m [0-100], --minheatlength [0-100]
+                        minimum number of heat observations required to count as a heat, default=1
   -o OUTPUTNAME, --outputname OUTPUTNAME
                         specify output filename for result xlsx and pdf
   -s start-dim stop-dim, --startstop start-dim stop-dim
