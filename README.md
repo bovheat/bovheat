@@ -8,15 +8,15 @@ Bovine Heat Detection and Analysis Tool (BovHEAT) - Automated Heat detection and
 This tool analyses the raw data and performs error detection and correction. Additional data sources will be
 supported in the future.
 
-<img src="docs/img/graphical_abstract.png" width="600" alt="Graphical Abstract"> <br>
+<img src="docs/img/graphical_abstract.png" width="830" alt="Graphical Abstract"> <br>
 We provide a one-file executable, which reads and processes SCR files automatically. 
 The user can define the desired threshold for estrus detection and the observation period. 
 Results are delivered as a wide and long formatted XLSX file and a PDF with activity line graph 
-visualizations for each cow. <br><br>
+visualizations for each cow. <br>
 
 <details>
-<summary>detailed heat description image</summary>
-<img src="docs/img/detailed_heat_description.png" width="600" alt="detailed heat description">
+<summary>Click here for a detailed heat description image</summary>
+<img src="docs/img/detailed_heat_description.png" width="830" alt="detailed heat description">
 </details>
 
 Table of Contents
@@ -47,8 +47,8 @@ For this example an observation period of 5 days before till 30 days after calvi
 The estrus detection threshold was set at 35.
 
 <details>
-<summary>line graph example from a pdf output file</summary>
-<img src="docs/img/pdf_single_line_graph.png" width="600" alt="pdf single line graph">
+<summary>Click here for a line graph example from a pdf output file</summary>
+<img src="docs/img/pdf_single_line_graph.png" width="830" alt="pdf single line graph">
 </details>
 
 #### Data
