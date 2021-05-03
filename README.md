@@ -83,11 +83,13 @@ Column language of the SCR files
 
 `Start and Stop DIM`  
 Choose the start and stop DIM to select the observation interval.  
- As an example: Start -5 and Stop 35 would include 5 days before till 35 days after calving.  
+As an example: Start -5 and Stop 35 would include 5 days before till 35 days after calving.  
 
 `Threshold`  
 Choose the desired threshold for estrus detection. Recommended is a threshold of 35.  
 
+`Minimum heat length`   
+Choose a minimum number of heat observations required to count as a heat. Default is 1.
 
 #### 4. Processing and results
 Observe the progress on screen. Results are delivered as a wide and long formatted XLSX file and
