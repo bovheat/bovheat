@@ -23,7 +23,7 @@ def get_start_parameters(args):
 
 def get_args():
     parser = argparse.ArgumentParser(
-        description="# Bovine Heat Analysis Tool (BovHEAT) #  \
+        description="# Bovine Heat Detection and Analysis Tool (BovHEAT) #  \
         \n\nBovHEAT starts in interactive mode, if startstop is not provided",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
