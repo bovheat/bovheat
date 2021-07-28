@@ -37,7 +37,7 @@ Table of Contents
 
 
 ## How to cite
-upcoming
+Plenio, J.-L., Bartel, A., Madureira, A. M. L., Cerri, R. L. A., Heuwieser, W., & Borchardt, S. (2021). *Application note: Validation of BovHEAT — An open-source analysis tool to process data from automated activity monitoring systems in dairy cattle for estrus detection.* **Computers and Electronics in Agriculture**, 188(September 2020), 106323. https://doi.org/10.1016/j.compag.2021.106323
 
 ## Demo
 
