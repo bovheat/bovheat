@@ -59,7 +59,7 @@ Run the BovHeat in parent folder according to the steps below. The column langua
 ## Download and Usage
 
 #### 1. Download
-We provide a one-file executable for Windows, Linux and macOS.
+We provide a one-file executable for Windows, Linux and macOS.  
 Download the zipped executable corresponding to your OS from the [latest BovHEAT release](https://github.com/bovheat/bovheat/releases/latest). 
 #### 2. SCR files and folder structure
 Place the BovHEAT executable in the folder containing SCR files in the XLSX or XLS format.
