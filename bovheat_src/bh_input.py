@@ -154,7 +154,6 @@ def read_clean_file(root, file_name, translation_table):
             os.path.join(root, file_name),
             usecols=list(translation_table.keys()),
             sheet_name=0,
-            index=True,
         )
     except:
         print(f"\r{file_name} ...SKIPPED")
