@@ -167,7 +167,7 @@ def read_clean_file(root, file_name, translation_table):
 
     data["foldername"] = os.path.basename(root)
 
-    data["datetime"] = pd.to_datetime(data["Date"].astype(str) + " " + data["Time"].astype(str))
+    data["datetime"] = pd.to_datetime(data["Date"].astype(str) + " " + data["Time"].astype(str), format='mixed')
 
     return data
 

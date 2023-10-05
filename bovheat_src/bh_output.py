@@ -15,7 +15,7 @@ def write_xlsx(final_df, filename):
             for i, width in enumerate(get_col_widths(df)):
                 worksheet.set_column(i - 1, i - 1, width)
 
-        writer.save()
+        writer.close()
 
     print(f"# XLSX: {filename} created.")
 

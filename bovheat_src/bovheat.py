@@ -113,7 +113,7 @@ def cut_time_window(cowdf, start_dim, stop_dim, interpolation_limit):
         date_start = calving_date + pd.Timedelta(days=start_dim)
         date_end = calving_date + pd.Timedelta(days=stop_dim)
 
-        datetime_range = pd.date_range(date_start, date_end, freq="2H", closed="left")
+        datetime_range = pd.date_range(date_start, date_end, freq="2H", inclusive="left")
         base_df = pd.DataFrame(data={"datetime": datetime_range})
 
         timeframe_df = pd.merge(base_df, cowdf, on="datetime", how="left", validate="one_to_one")
@@ -166,7 +166,7 @@ def calc_heats(cowdf, threshold, minheatlength):
         ]
     )
 
-    heat_df = heat_df.append(pd.Series(dtype=object), ignore_index=True)
+    heat_df.loc[len(heat_df)] = pd.Series(dtype=object)
 
     peak_groups = []  # Example: [[2, 3, 4, 5], [8, 9, 10, 11]]
     gte_threshold_indexes = cowdf[cowdf["Activity Change"] >= threshold].index
