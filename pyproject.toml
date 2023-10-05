@@ -16,7 +16,7 @@ keywords = ["dairy cow", "heat detection", "precision livestock farming", "anima
 python = ">=3.8,<3.11"
 xlrd = "2.0.1"
 xlsxwriter = "^1.2.8"
-pandas = "^1.0.3"
+pandas = "^2.0.2"
 matplotlib = "^3.2.1"
 ## Optional dev dependencies must be specified under dependencies
 pytest = { version = "^5.4.1", optional = true }

@@ -57,7 +57,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu-18.04", windows-latest, macos-latest]
+        os: ["ubuntu-20.04", windows-latest, macos-latest]
         python-version: [3.8] #3.7, 3.8
 
     runs-on: ${{ matrix.os }}
@@ -81,7 +81,7 @@ jobs:
       shell: bash
     - name: Build executable
       run: |
-        poetry run pyinstaller bovheat_src/bovheat.py --onefile --osx-bundle-identifier org.bovheat.bovheat --icon bovheat_icon.ico --name BovHEAT_${{runner.os}}_${{env.today}}
+        poetry run pyinstaller bovheat_src/bovheat.py --onefile --paths . --osx-bundle-identifier org.bovheat.bovheat --icon bovheat_icon.ico --name BovHEAT_${{runner.os}}_${{env.today}}
     - name: Upload artifact ${{ matrix.os }}
       uses: actions/upload-artifact@v1
       with:

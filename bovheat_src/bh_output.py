@@ -15,8 +15,6 @@ def write_xlsx(final_df, filename):
             for i, width in enumerate(get_col_widths(df)):
                 worksheet.set_column(i - 1, i - 1, width)
 
-        writer.save()
-
     print(f"# XLSX: {filename} created.")
 
 
@@ -58,11 +56,16 @@ def get_col_widths(dataframe):
     ]
 
 
-def write_pdf(heats_df, sections_df, threshold, filename):
+def write_pdf(heats_df, sections_df, threshold, filename, x_axis_type):
 
     filename += ".pdf"
 
     pdf_file = PdfPages(filename)  # Start PDF file
+
+    if x_axis_type == 'dim':
+        build_pdf_page = build_pdf_page_dim
+    elif x_axis_type == 'dt':
+        build_pdf_page = build_pdf_page_dt
 
     heats_df.groupby(["foldername", "Cow Number", "lactation_adj"]).apply(
         lambda df: build_pdf_page(
@@ -82,7 +85,7 @@ def write_pdf(heats_df, sections_df, threshold, filename):
     print(f"\n# PDF: {filename} created.")
 
 
-def build_pdf_page(cowdf, heats_df, pdf_file, threshold):
+def build_pdf_page_dt(cowdf, heats_df, pdf_file, threshold):
     print(
         "\r Building PDF for", cowdf["foldername"].iloc[0], cowdf["Cow Number"].iloc[0], end="",
     )
@@ -92,7 +95,7 @@ def build_pdf_page(cowdf, heats_df, pdf_file, threshold):
     lactation_no = cowdf["lactation_adj"].iloc[0]
 
     plt.style.use("ggplot")
-    _, ax = plt.subplots(figsize=(28, 12))
+    _, ax = plt.subplots(figsize=(14, 6))
 
     cowdf.plot(
         ax=ax,
@@ -105,6 +108,7 @@ def build_pdf_page(cowdf, heats_df, pdf_file, threshold):
 
     ax.set_ylim([-50, 110])
 
+    # Horizontal threshold line
     ax.axhline(threshold, label=f"{threshold}_thresh", color="black", linestyle=":")
 
     calving_date = cowdf["calving_date"].iloc[0]
@@ -118,6 +122,54 @@ def build_pdf_page(cowdf, heats_df, pdf_file, threshold):
         ax.axvspan(
             heat["start_dt_heat"].iloc[0], heat["stop_dt_heat"].iloc[0], alpha=0.1, color="red",
         )
+
+    plt.legend(loc="best")
+    plt.savefig(pdf_file, bbox_inches="tight", format="pdf")
+
+    plt.close()
+
+def build_pdf_page_dim(cowdf, heats_df, pdf_file, threshold):
+    print(
+        "\r Building PDF for", cowdf["foldername"].iloc[0], cowdf["Cow Number"].iloc[0], end="",
+        )
+
+    cownumber = cowdf["Cow Number"].iloc[0]
+    foldername = cowdf["foldername"].iloc[0]
+    lactation_no = cowdf["lactation_adj"].iloc[0]
+    calving_date = cowdf["calving_date"].iloc[0]
+    cowdf["DIM"] = (cowdf["datetime"] - calving_date).dt.total_seconds() / (60 * 60 * 24)
+
+
+    plt.style.use("ggplot")
+    _, ax = plt.subplots(figsize=(14, 6))
+
+    cowdf.plot(
+        ax=ax,
+        kind="line",
+        x= "DIM",
+        y="Activity Change",
+        title=f"{foldername} : {cownumber:.0f}_L{lactation_no:.0f}  % "
+              f"{heats_df['act_usable'].iloc[0]:.2f}",
+        )
+
+    ax.set_ylim([-50, 110])
+
+    # Horizontal threshold line
+    ax.axhline(threshold, label=f"{threshold}_thresh", color="black", linestyle=":")
+
+
+    if 0 in cowdf["Days in Lactation"].values:
+        ax.axvline(
+            0, label="calving", color="black", linestyle="-",
+            )
+
+    for _, heat in heats_df[heats_df["heat_no"] > 0].groupby(["heat_no"]):
+        # Calculate DIM for start and stop of each heat
+        start_dim = (heat["start_dt_heat"].iloc[0] - calving_date).total_seconds() / (60 * 60 * 24)
+        stop_dim = (heat["stop_dt_heat"].iloc[0] - calving_date).total_seconds() / (60 * 60 * 24)
+
+        # Plot using DIM values
+        ax.axvspan(start_dim, stop_dim, alpha=0.1, color="red")
 
     plt.legend(loc="best")
     plt.savefig(pdf_file, bbox_inches="tight", format="pdf")
