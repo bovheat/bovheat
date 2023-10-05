@@ -119,6 +119,8 @@ optional arguments:
                         negative values are allowed
   -t [0-100], --threshold [0-100]
                         threshold for heat detection, default=35
+  -x {dim,dt}, --x_axis_type {dim,dt}
+                        show x-axis as datetime or dim in PDF, default=dim
 ```
 
 ## Requirements and constraints
@@ -138,9 +140,9 @@ The following columns are required to be present in all SCR files:
 The one-file executable of BovHEAT using x64 Python is built through GitHub Actions.
 Therefore, the highest compatibility is achieved on these x64 OS versions and up:
 ```
-macos-10.15
-windows-2019
-ubuntu-18.04
+macos-12
+windows-2022
+ubuntu-20.04
 ```
 
 
@@ -148,7 +150,7 @@ ubuntu-18.04
 
 
 ## Development
-The authors recommend to use Python 3.8.  
+The authors recommend to use Python 3.8.18.  
 To set up the development environment install [poetry](https://python-poetry.org/). And run:
 ```
 poetry install

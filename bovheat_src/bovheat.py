@@ -17,7 +17,7 @@ from bovheat_src import bh_input, bh_output
 # %%
 def print_welcome():
     welcome_message = """
-    Bovine Heat Detection and Analysis Tool (BovHEAT) - Version 1.2.0
+    Bovine Heat Detection and Analysis Tool (BovHEAT) - Version 1.3.0
     https://github.com/bovheat/bovheat
     """
 
@@ -275,6 +275,7 @@ def main():
         sections_df=sections_df,
         threshold=start_parameters["threshold"],
         filename=out_filename,
+        x_axis_type=args.x_axis_type
     )
 
     input("Hit Enter to close.")

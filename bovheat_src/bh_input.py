@@ -65,6 +65,15 @@ def get_args():
     )
 
     parser.add_argument(
+        "-x",
+        "--x_axis_type",
+        type=str,
+        choices=["dt", "dim"],
+        default="dim",
+        help="show x-axis as datetime or dim in PDF, default=dim",
+    )
+
+    parser.add_argument(
         "-m",
         "--minheatlength",
         type=int,
